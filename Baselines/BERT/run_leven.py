@@ -615,12 +615,12 @@ def main():
 
     args.model_type = args.model_type.lower()
     config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
-    config = AutoConfig.from_pretrained(args.config_name if args.config_name else args.model_name_or_path,
+    config = config_class.from_pretrained(args.config_name if args.config_name else args.model_name_or_path,
                                         num_labels=num_labels)
-    tokenizer = AutoTokenizer.from_pretrained(args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
+    tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
                                               do_lower_case=args.do_lower_case, )
 
-    ner_model = AutoModelForTokenClassification.from_pretrained(
+    ner_model = model_class.from_pretrained(
         args.model_name_or_path,
         from_tf=bool(".ckpt" in args.model_name_or_path),
         config=config

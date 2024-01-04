@@ -16,18 +16,19 @@
 """ BERT-CRF running for LEVEN """
 
 import argparse
+import faulthandler
 import glob
+import json
 import os
 import random
-import json
+import warnings
 
+import dill
 import numpy as np
 import seqeval.metrics as se
-
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
-
 from transformers import (
     WEIGHTS_NAME,
     AdamW,
@@ -37,11 +38,12 @@ from transformers import (
     DistilBertConfig,
     RobertaConfig,
     XLMRobertaConfig,
-    get_linear_schedule_with_warmup,
+    get_linear_schedule_with_warmup, RobertaForTokenClassification, RobertaTokenizer, AutoConfig, AutoTokenizer,
+    AutoModelForTokenClassification,
 )
-from utils_leven import convert_examples_to_features, get_labels, read_examples_from_file
+
 from bert_crf import *
-import warnings
+from utils_leven import convert_examples_to_features, get_labels, read_examples_from_file
 
 warnings.filterwarnings('ignore')
 
@@ -58,6 +60,7 @@ ALL_MODELS = sum(
 MODEL_CLASSES = {
     "bert": (BertConfig, BertForTokenClassification, BertTokenizer),
     "bertcrf": (BertConfig, BertCRFForTokenClassification, BertTokenizer),
+    "roberta": (RobertaConfig, RobertaForTokenClassification, RobertaTokenizer)
 }
 
 pure_event2id = {
@@ -245,7 +248,7 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
     for _ in train_iterator:
         epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
         for step, batch in enumerate(epoch_iterator):
-            model.train()
+            model.train()  # 这里是训练模式
             batch = tuple(t.to(args.device) for t in batch)
             inputs = {"input_ids": batch[0],
                       "attention_mask": batch[1],
@@ -253,7 +256,7 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
 
             if args.model_type != "distilbert":
                 inputs["token_type_ids"] = batch[2]
-
+            # 核心
             outputs = model(**inputs)
             loss = outputs[0]  # model outputs are always tuple in pytorch-transformers (see doc)
 
@@ -267,7 +270,6 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
                     scaled_loss.backward()
             else:
                 loss.backward()
-
             tr_loss += loss.item()
             if (step + 1) % args.gradient_accumulation_steps == 0:
                 if args.fp16:
@@ -319,7 +321,7 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
 
                     logger.info("Saving optimizer and scheduler states to %s", output_dir)
                     torch.save(optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
-                    torch.save(scheduler.state_dict(), os.path.join(output_dir, "scheduler.pt"))
+                    torch.save(scheduler.state_dict(), os.path.join(output_dir, "scheduler.pt"), pickle_module=dill)
 
             if 0 < args.max_steps < global_step:
                 epoch_iterator.close()
@@ -416,7 +418,8 @@ def evaluate(args, model, tokenizer, labels, pad_token_label_id, mode, prefix=""
     with open('./saved/prf_report_dict.json', 'w', encoding='utf-8') as f:
         json.dump(info, f, indent=4, ensure_ascii=False)
 
-    print(se.classification_report(out_label_list, preds_list, digits=4), file=open('./saved/prf_report.txt', 'w'))
+    print(se.classification_report(out_label_list, preds_list, digits=4),
+          file=open('./saved/prf_report.txt', 'w', encoding='utf-8'))
 
     return results, preds_list
 
@@ -427,10 +430,10 @@ def load_and_cache_examples(args, tokenizer, labels, pad_token_label_id, mode):
 
     # Load data features from cache or dataset file
     cached_features_file = os.path.join(
-        args.data_dir, 
+        args.data_dir,
         "cached_{}_{}_{}".format(mode,
-        list(filter(None, args.model_name_or_path.split("/"))).pop(),
-        str(args.max_seq_length))
+                                 list(filter(None, args.model_name_or_path.split("/"))).pop(),
+                                 str(args.max_seq_length))
     )
     if os.path.exists(cached_features_file) and not args.overwrite_cache:
         logger.info("Loading features from cached file %s", cached_features_file)
@@ -439,15 +442,15 @@ def load_and_cache_examples(args, tokenizer, labels, pad_token_label_id, mode):
         logger.info("Creating features from dataset file at %s", args.data_dir)
         examples = read_examples_from_file(args.data_dir, mode)
         features = convert_examples_to_features(
-            examples, 
-            labels, 
+            examples,
+            labels,
             args.max_seq_length, tokenizer,
-            cls_token_at_end=False,           # xlnet has a cls token at the end
+            cls_token_at_end=False,  # xlnet has a cls token at the end
             cls_token=tokenizer.cls_token,
             cls_token_segment_id=0,
             sep_token=tokenizer.sep_token,
-            sep_token_extra=False,            # roberta uses an extra separator b/w pairs of sentences
-            pad_on_left=False,                # pad on the left for xlnet
+            sep_token_extra=False,  # roberta uses an extra separator b/w pairs of sentences
+            pad_on_left=False,  # pad on the left for xlnet
             pad_token=tokenizer.convert_tokens_to_ids([tokenizer.pad_token])[0],
             pad_token_segment_id=0,
             pad_token_label_id=pad_token_label_id
@@ -482,7 +485,7 @@ def main():
         parser.add_argument("--model_type", default=None, type=str, required=True,
                             help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()))
 
-        parser.add_argument("--model_name_or_path", default='./bert-base-chinese', type=str, required=False,
+        parser.add_argument("--model_name_or_path", default='bert-base-chinese', type=str, required=False,
                             help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(
                                 ALL_MODELS))
 
@@ -612,19 +615,18 @@ def main():
 
     args.model_type = args.model_type.lower()
     config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
-    config = config_class.from_pretrained(args.config_name if args.config_name else args.model_name_or_path,
-                                          num_labels=num_labels,
-                                          cache_dir=args.cache_dir if args.cache_dir else None)
-    tokenizer = tokenizer_class.from_pretrained(args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
-                                                do_lower_case=args.do_lower_case,
-                                                cache_dir=args.cache_dir if args.cache_dir else None)
+    config = AutoConfig.from_pretrained(args.config_name if args.config_name else args.model_name_or_path,
+                                        num_labels=num_labels)
+    tokenizer = AutoTokenizer.from_pretrained(args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
+                                              do_lower_case=args.do_lower_case, )
 
-    ner_model = model_class.from_pretrained(
+    ner_model = AutoModelForTokenClassification.from_pretrained(
         args.model_name_or_path,
         from_tf=bool(".ckpt" in args.model_name_or_path),
-        config=config,
-        cache_dir=args.cache_dir if args.cache_dir else None,
+        config=config
     )
+
+    # ner_model.load_state_dict(torch.load("./legalroberta/pytorch_model.bin"))
 
     if args.local_rank == 0:
         torch.distributed.barrier()
@@ -714,10 +716,10 @@ def main():
         result, predictions = evaluate(args, model, tokenizer, labels, pad_token_label_id, mode="test")
         # Save predictions
         output_test_predictions_file = os.path.join(args.output_dir, "results.jsonl")
-        with open(output_test_predictions_file, "w") as writer:
+        with open(output_test_predictions_file, "w", encoding='utf-8') as writer:
             Cnt = 0
             levenTypes = list(pure_event2id.keys())
-            with open(os.path.join(args.data_dir, "test.jsonl"), "r") as fin:
+            with open(os.path.join(args.data_dir, "test.jsonl"), "r", encoding='utf-8') as fin:
                 lines = fin.readlines()
                 for line in lines:
                     doc = json.loads(line)
@@ -749,4 +751,5 @@ def main():
 
 
 if __name__ == "__main__":
+    faulthandler.enable()
     main()

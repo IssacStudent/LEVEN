@@ -417,7 +417,7 @@ def evaluate(args, model, tokenizer, labels, pad_token_label_id, mode, prefix=""
     with open('./saved/prf_report_dict.json', 'w', encoding='utf-8') as f:
         json.dump(info, f, indent=4, ensure_ascii=False)
 
-    print(se.classification_report(out_label_list, preds_list, digits=4), file=open('./saved/prf_report.txt', 'w'))
+    print(se.classification_report(out_label_list, preds_list, digits=4), file=open('./saved/prf_report.txt', 'w', encoding="utf-8"))
 
     return results, preds_list
 
@@ -483,7 +483,7 @@ def main():
         parser.add_argument("--model_type", default=None, type=str, required=True,
                             help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()))
 
-        parser.add_argument("--model_name_or_path", default='./bert-base-chinese', type=str, required=False,
+        parser.add_argument("--model_name_or_path", default='bert-base-chinese', type=str, required=False,
                             help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(
                                 ALL_MODELS))
 
@@ -715,10 +715,10 @@ def main():
         result, predictions = evaluate(args, model, tokenizer, labels, pad_token_label_id, mode="test")
         # Save predictions
         output_test_predictions_file = os.path.join(args.output_dir, "results.jsonl")
-        with open(output_test_predictions_file, "w") as writer:
+        with open(output_test_predictions_file, "w", encoding="utf-8") as writer:
             Cnt = 0
             levenTypes = list(pure_event2id.keys())
-            with open(os.path.join(args.data_dir, "test.jsonl"), "r") as fin:
+            with open(os.path.join(args.data_dir, "test.jsonl"), "r", encoding="utf-8") as fin:
                 lines = fin.readlines()
                 for line in lines:
                     doc = json.loads(line)

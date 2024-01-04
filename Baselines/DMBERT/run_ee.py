@@ -306,7 +306,7 @@ def evaluate(args, model, tokenizer, prefix="", test=False, infer=False):
 
         output_eval_file = os.path.join(eval_output_dir, "is_test_" + str(test).lower() + "_eval_results.txt")
 
-        with open(output_eval_file, "w") as writer:
+        with open(output_eval_file, "w", encoding="utf-8") as writer:
             logger.info("***** Eval results {} *****".format(str(prefix) + " is test:" + str(test)))
             writer.write("model           =%s\n" % str(args.model_name_or_path))
             writer.write(

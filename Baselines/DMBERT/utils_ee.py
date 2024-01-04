@@ -310,6 +310,9 @@ def convert_examples_to_features(
             logger.info(
                 "Attention! you are cropping tokens."
             )
+            logger.info(textL.__len__() + textR.__len__())
+            logger.info(example.example_id)
+            logger.info(ex_index)
 
         input_ids, token_type_ids = inputs["input_ids"], inputs["token_type_ids"]
         assert len(input_ids) == len(maskL)

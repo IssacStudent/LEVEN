@@ -12,8 +12,8 @@ if __name__ == '__main__':
     parser.add_argument("--output", default="./saved/results.jsonl", help="path to the output file")
     args = parser.parse_args()
     preds = np.load(args.preds)
-    fout = open(args.output, "w")
-    with open(args.test_data, "r") as fin:
+    fout = open(args.output, "w", encoding="utf-8")
+    with open(args.test_data, "r", encoding="utf-8") as fin:
         lines = fin.readlines()
         Cnt = 0
         for line in lines:

@@ -283,10 +283,10 @@ def read_examples_from_file(data_dir, mode):
                     for i in range(mention['offset'][0] + 1, mention['offset'][1]):
                         labels[mention['sent_id']][i] = "I-" + event['type']
 
-            for mention in doc['negative_triggers']:
-                labels[mention['sent_id']][mention['offset'][0]] = "O"
-                for i in range(mention['offset'][0] + 1, mention['offset'][1]):
-                    labels[mention['sent_id']][i] = "O"
+            # for mention in doc['negative_triggers']:
+            #     labels[mention['sent_id']][mention['offset'][0]] = "O"
+            #     for i in range(mention['offset'][0] + 1, mention['offset'][1]):
+            #         labels[mention['sent_id']][i] = "O"
 
         for i in range(0, len(words)):
             examples.append(InputExample(guid="%s-%s-%d" % (mode, doc['id'], i),

@@ -417,7 +417,7 @@ def main():
         )
         parser.add_argument(
             "--model_name_or_path",
-            default='bert-base-chinese',
+            default='hfl/chinese-roberta-wwm-ext',
             type=str,
             required=False,
             help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS),

@@ -44,6 +44,7 @@ from transformers import (
 
 from bert_crf import *
 from utils_leven import convert_examples_to_features, get_labels, read_examples_from_file
+from fgm import FGM
 
 warnings.filterwarnings('ignore')
 
@@ -207,7 +208,7 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
 
     # for crf might wanna change this to SGD with gradient clipping and my other scheduler
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
-    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=args.warmup_steps,
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=100,
                                                 num_training_steps=t_total)
     if args.fp16:
         try:
@@ -240,11 +241,12 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
     global_step = 0
     best_steps = 0
     tr_loss, logging_loss = 0.0, 0.0
+    loss_list = []
     model.zero_grad()
     train_iterator = trange(int(args.num_train_epochs), desc="Epoch", disable=args.local_rank not in [-1, 0])
 
     set_seed(args)  # Added here for reproductibility (even between python 2 and 3)
-
+    fgm = FGM(model)
     for _ in train_iterator:
         epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
         for step, batch in enumerate(epoch_iterator):
@@ -270,7 +272,18 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
                     scaled_loss.backward()
             else:
                 loss.backward()
-            tr_loss += loss.item()
+            # FGM
+            fgm.attack()
+            loss_adv = model(**inputs)[0]
+            if args.n_gpu > 1:
+                loss_adv = loss_adv.mean()  # mean() to average on multi-gpu parallel training
+            if args.gradient_accumulation_steps > 1:
+                loss_adv = loss_adv / args.gradient_accumulation_steps
+            loss_adv.backward()
+            fgm.restore()
+
+            tr_loss += loss_adv.item()
+            loss_list.append(loss_adv.item())
             if (step + 1) % args.gradient_accumulation_steps == 0:
                 if args.fp16:
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
@@ -281,30 +294,6 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
                 scheduler.step()  # Update learning rate schedule
                 model.zero_grad()
                 global_step += 1
-
-                if args.local_rank in [-1, 0] and args.logging_steps > 0 and global_step % args.logging_steps == 0:
-                    # Log metrics
-                    if args.local_rank == -1 and args.evaluate_during_training:
-                        # Only evaluate when single GPU otherwise metrics may not average well
-                        model.to(args.device)
-                        results, _ = evaluate(args, model, tokenizer, labels, pad_token_label_id, mode="valid")
-                        if results['f1-micro'] > best_dev_f1:
-                            best_dev_f1 = results['f1-micro']
-                            best_steps = global_step
-                            # results_test, _ = evaluate(args, model, tokenizer, labels, pad_token_label_id,
-                            #                            mode="test")
-                            # logger.info(
-                            #     "test f1: %s, loss: %s",
-                            #     str(results_test['f1']),
-                            #     str(results_test['loss']),
-                            # )
-                            if best_steps:
-                                logger.info("best steps of eval f1 is the following checkpoints: %s", best_steps)
-                                logger.info("best precision: {}, recall: {}, f1: {}".format(results['p-micro'],
-                                                                                            results['r-micro'],
-                                                                                            results['f1-micro']))
-
-                    logging_loss = tr_loss
 
                 if args.local_rank in [-1, 0] and args.save_steps > 0 and global_step % args.save_steps == 0:
                     # Save model checkpoint
@@ -322,6 +311,10 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
                     logger.info("Saving optimizer and scheduler states to %s", output_dir)
                     torch.save(optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
                     torch.save(scheduler.state_dict(), os.path.join(output_dir, "scheduler.pt"), pickle_module=dill)
+                    # 打印loss_list到文件
+                    with open(os.path.join(output_dir, 'loss_list.txt'), 'w', encoding='utf-8') as f:
+                        for loss in loss_list:
+                            f.write(str(loss) + '\n')
 
             if 0 < args.max_steps < global_step:
                 epoch_iterator.close()
@@ -329,7 +322,10 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
         if 0 < args.max_steps < global_step:
             train_iterator.close()
             break
-
+    #打印loss_list到文件
+    with open(os.path.join(args.output_dir, 'loss_list.txt'), 'w', encoding='utf-8') as f:
+        for loss in loss_list:
+            f.write(str(loss) + '\n')
     return global_step, tr_loss / global_step
 
 
@@ -415,11 +411,11 @@ def evaluate(args, model, tokenizer, labels, pad_token_label_id, mode, prefix=""
         value = info[key]
         for v in value:
             value[v] = float(value[v])
-    with open('./saved/prf_report_dict.json', 'w', encoding='utf-8') as f:
+    with open(os.path.join(args.output_dir, 'prf_report_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(info, f, indent=4, ensure_ascii=False)
 
     print(se.classification_report(out_label_list, preds_list, digits=4),
-          file=open('./saved/prf_report.txt', 'w', encoding='utf-8'))
+          file=open(os.path.join(args.output_dir, 'prf_report.txt'), 'w', encoding='utf-8'))
 
     return results, preds_list
 
@@ -485,7 +481,7 @@ def main():
         parser.add_argument("--model_type", default=None, type=str, required=True,
                             help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()))
 
-        parser.add_argument("--model_name_or_path", default='bert-base-chinese', type=str, required=False,
+        parser.add_argument("--model_name_or_path", default='./legalroberta', type=str, required=False,
                             help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(
                                 ALL_MODELS))
 
@@ -493,9 +489,9 @@ def main():
                             help="The output directory where the model predictions and checkpoints will be written.")
 
         # Other parameters
-        parser.add_argument("--config_name", default="", type=str,
+        parser.add_argument("--config_name", default="./legalroberta", type=str,
                             help="Pretrained config name or path if not the same as model_name")
-        parser.add_argument("--tokenizer_name", default="", type=str,
+        parser.add_argument("--tokenizer_name", default="hfl/chinese-roberta-wwm-ext", type=str,
                             help="Pretrained tokenizer name or path if not the same as model_name")
         parser.add_argument("--cache_dir", default="", type=str,
                             help="Where do you want to store the pre-trained models downloaded from s3")
@@ -533,9 +529,6 @@ def main():
                             help="If > 0: set total number of training steps to perform. Override num_train_epochs.")
         parser.add_argument("--warmup_steps", default=0, type=int,
                             help="Linear warmup over warmup_steps.")
-
-        parser.add_argument("--logging_steps", type=int, default=1000,
-                            help="Log every X updates steps.")
         parser.add_argument("--save_steps", type=int, default=500,
                             help="Save checkpoint every X updates steps.")
         parser.add_argument("--eval_all_checkpoints", action="store_true",
@@ -583,7 +576,12 @@ def main():
     else:  # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
         torch.cuda.set_device(args.local_rank)
         device = torch.device("cuda", args.local_rank)
-        torch.distributed.init_process_group(backend="nccl")
+        torch.distributed.init_process_group(
+        backend='nccl',
+        init_method='env://',
+        world_size=1,
+        rank=0
+    )
         args.n_gpu = 1
 
     args.device = device
@@ -691,7 +689,7 @@ def main():
                     logger.info("best precision: {}, recall: {}, f1: {}".format(result['p-micro'],
                                                                                 result['r-micro'],
                                                                                 result['f1-micro']))
-                    with open('./saved/best_step_info.txt', 'w', encoding='utf-8') as f:
+                    with open(os.path.join(args.output_dir, 'best_step_info.txt'), 'w', encoding='utf-8') as f:
                         json.dump({'best_checkpoint': best_steps,
                                    **result},
                                   f,
@@ -713,39 +711,7 @@ def main():
             args.tokenizer_name if args.tokenizer_name else args.model_name_or_path, do_lower_case=args.do_lower_case)
         model = model_class.from_pretrained(args.output_dir)
         model.to(args.device)
-        result, predictions = evaluate(args, model, tokenizer, labels, pad_token_label_id, mode="test")
-        # Save predictions
-        output_test_predictions_file = os.path.join(args.output_dir, "results.jsonl")
-        with open(output_test_predictions_file, "w", encoding='utf-8') as writer:
-            Cnt = 0
-            levenTypes = list(pure_event2id.keys())
-            with open(os.path.join(args.data_dir, "test.jsonl"), "r", encoding='utf-8') as fin:
-                lines = fin.readlines()
-                for line in lines:
-                    doc = json.loads(line)
-                    res = {}
-                    res['id'] = doc['id']
-                    res['predictions'] = []
-                    for mention in doc['candidates']:
-                        if mention['offset'][1] > len(predictions[Cnt + mention['sent_id']]):
-                            print(len(doc['content'][mention['sent_id']]['tokens']),
-                                  len(predictions[Cnt + mention['sent_id']]))
-                            res['predictions'].append({"id": mention['id'], "type_id": 0})
-                            continue
-                        is_NA = False if predictions[Cnt + mention['sent_id']][mention['offset'][0]].startswith(
-                            "B") else True
-                        if not is_NA:
-                            Type = predictions[Cnt + mention['sent_id']][mention['offset'][0]][2:]
-                            for i in range(mention['offset'][0] + 1, mention['offset'][1]):
-                                if predictions[Cnt + mention['sent_id']][i][2:] != Type:
-                                    is_NA = True
-                                    break
-                            if not is_NA:
-                                res['predictions'].append({"id": mention['id'], "type_id": levenTypes.index(Type)})
-                        if is_NA:
-                            res['predictions'].append({"id": mention['id'], "type_id": 0})
-                    writer.write(json.dumps(res) + "\n")
-                    Cnt += len(doc['content'])
+        result, predictions = evaluate(args, model, tokenizer, labels, pad_token_label_id, mode="valid")
 
     return results
 

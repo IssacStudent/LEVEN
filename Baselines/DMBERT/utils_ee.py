@@ -219,17 +219,17 @@ class LEVENProcessor(DataProcessor):
                             label=event['type'],
                         )
                     )
-            for nt in data['negative_triggers']:
-                e_id = "%s-%s" % (set_type, nt['id'])
-                examples.append(
-                    InputExample(
-                        example_id=e_id,
-                        tokens=data['content'][nt['sent_id']]['tokens'],
-                        triggerL=nt['offset'][0],
-                        triggerR=nt['offset'][1],
-                        label='None',
-                    )
-                )
+            # for nt in data['negative_triggers']:
+            #     e_id = "%s-%s" % (set_type, nt['id'])
+            #     examples.append(
+            #         InputExample(
+            #             example_id=e_id,
+            #             tokens=data['content'][nt['sent_id']]['tokens'],
+            #             triggerL=nt['offset'][0],
+            #             triggerR=nt['offset'][1],
+            #             label='None',
+            #         )
+            #     )
 
         return examples
 

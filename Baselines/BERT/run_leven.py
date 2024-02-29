@@ -718,7 +718,7 @@ if __name__ == "__main__":
     wandb.init(
         # set the wandb project where this run will be logged
         # 名称为2shot加上时间，格式为yyyyMMddHHmm
-        project="2shot" + datetime.now().strftime("%Y%m%d%H%M")
+        project="2shot_t4_" + datetime.now().strftime("%Y%m%d%H%M")
     )
     main()
     wandb.finish()

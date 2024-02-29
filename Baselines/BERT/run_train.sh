@@ -1,14 +1,14 @@
 CUDA_VISIBLE_DEVICES=0,1 python run_leven.py \
-	--data_dir ./new_data \
+	--data_dir ./2shot \
 	--model_type bert \
-	--output_dir ./saved_20240228 \
+	--output_dir ./saved_20240229_2shot \
 	--max_seq_length 512 \
 	--per_gpu_train_batch_size 15 \
 	--per_gpu_eval_batch_size 15 \
 	--gradient_accumulation_steps 2 \
 	--learning_rate 5e-5 \
-	--num_train_epochs 4 \
-	--save_steps 100 \
+	--num_train_epochs 40 \
+	--save_steps 10 \
 	--seed 3407 \
 	--do_train \
 	--do_eval \

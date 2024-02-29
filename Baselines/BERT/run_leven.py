@@ -668,7 +668,6 @@ def main():
             print('')
             logging.getLogger("pytorch_transformers.modeling_utils").setLevel(logging.WARN)  # Reduce logging
 
-        logger.info("Evaluate the following checkpoints: %s", checkpoints)
         special_element = checkpoints.pop()
 
         # 使用sorted函数和自定义排序键重新排序剩余列表
@@ -676,6 +675,9 @@ def main():
 
         # 将特殊元素添加到排序后的列表末尾
         sorted_checkpoints.append(special_element)
+        logger.info("Evaluate the following checkpoints: %s", sorted_checkpoints)
+        checkpoints = sorted_checkpoints
+
         for checkpoint in checkpoints:
             global_step = checkpoint.split("-")[-1] if len(checkpoints) > 1 else ""
             model = model_class.from_pretrained(checkpoint)

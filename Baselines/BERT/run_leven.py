@@ -22,6 +22,7 @@ import json
 import os
 import random
 import warnings
+from datetime import time, datetime
 
 import dill
 import numpy as np
@@ -45,7 +46,7 @@ from transformers import (
 from bert_crf import *
 from utils_leven import convert_examples_to_features, get_labels, read_examples_from_file
 from fgm import FGM
-
+import wandb
 warnings.filterwarnings('ignore')
 
 logger = logging.getLogger(__name__)
@@ -284,6 +285,7 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
 
             tr_loss += loss_adv.item()
             loss_list.append(loss_adv.item())
+            wandb.log({"loss_adv": loss_adv.item()})
             if (step + 1) % args.gradient_accumulation_steps == 0:
                 if args.fp16:
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
@@ -311,10 +313,6 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
                     logger.info("Saving optimizer and scheduler states to %s", output_dir)
                     torch.save(optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
                     torch.save(scheduler.state_dict(), os.path.join(output_dir, "scheduler.pt"), pickle_module=dill)
-                    # 打印loss_list到文件
-                    with open(os.path.join(output_dir, 'loss_list.txt'), 'w', encoding='utf-8') as f:
-                        for loss in loss_list:
-                            f.write(str(loss) + '\n')
 
             if 0 < args.max_steps < global_step:
                 epoch_iterator.close()
@@ -322,10 +320,6 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
         if 0 < args.max_steps < global_step:
             train_iterator.close()
             break
-    #打印loss_list到文件
-    with open(os.path.join(args.output_dir, 'loss_list.txt'), 'w', encoding='utf-8') as f:
-        for loss in loss_list:
-            f.write(str(loss) + '\n')
     return global_step, tr_loss / global_step
 
 
@@ -401,7 +395,7 @@ def evaluate(args, model, tokenizer, labels, pad_token_label_id, mode, prefix=""
         "r-marco": se.recall_score(out_label_list, preds_list, average='macro'),
         "f1-macro": se.f1_score(out_label_list, preds_list, average='macro'),
     }
-
+    wandb.log(results)
     logger.info("***** Eval results {} on {}*****".format(prefix, mode))
     for key in results.keys():
         logger.info("  %s = %s", key, str(results[key]))
@@ -718,4 +712,13 @@ def main():
 
 if __name__ == "__main__":
     faulthandler.enable()
+    # 设置环境变量LC_ALL=C.UTF-8
+    os.environ['LC_ALL'] = 'C.UTF-8'
+    os.environ['LANG'] = 'C.UTF-8'
+    wandb.init(
+        # set the wandb project where this run will be logged
+        # 名称为2shot加上时间，格式为yyyyMMddHHmm
+        project="2shot" + datetime.now().strftime("%Y%m%d%H%M")
+    )
     main()
+    wandb.finish()

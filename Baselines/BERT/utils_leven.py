@@ -289,7 +289,12 @@ def read_examples_from_file(data_dir, mode):
             #         labels[mention['sent_id']][i] = "O"
 
         for i in range(0, len(words)):
-            examples.append(InputExample(guid="%s-%s-%d" % (mode, doc['id'], i),
+            # 如果labels[i]全都是'O'，则不加入examples
+
+            if all(e == 'O' for e in labels[i]):
+                continue
+            else:
+                examples.append(InputExample(guid="%s-%s-%d" % (mode, doc['id'], i),
                                          words=words[i],
                                          labels=labels[i]))
 
@@ -328,9 +333,7 @@ def convert_examples_to_features(examples,
     features = []
     for ex_index, example in enumerate(examples):
         if ex_index % 10000 == 0:
-            print("###############")
             logger.info("Writing example %d of %d", ex_index, len(examples))
-            print("###############")
 
         tokens = []
         label_ids = []

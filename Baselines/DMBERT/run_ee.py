@@ -175,6 +175,7 @@ def train(args, train_dataset, model, tokenizer):
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 
+            wandb.log({"loss": loss.item()})
             tr_loss += loss.item()
             if (step + 1) % args.gradient_accumulation_steps == 0:
 
@@ -301,8 +302,9 @@ def evaluate(args, model, tokenizer, prefix="", test=False, infer=False):
         precision, recall, f1 = calculate_scores(preds, out_label_ids, processors[eval_task]().get_labels())
         if infer:
             np.save(os.path.join(eval_output_dir, str(prefix)+"_preds.npy"), preds)
-            
+
         result = {"eval_p": precision, "eval_recall": recall, "eval_f1": f1, "eval_loss": eval_loss}
+        wandb.log(result)
         results.update(result)
 
         output_eval_file = os.path.join(eval_output_dir, "is_test_" + str(test).lower() + "_eval_results.txt")
@@ -715,7 +717,7 @@ def main():
 
     if best_steps:
         logger.info("best steps of eval f1 is the following checkpoints: %s", best_steps)
-    wandb.fin
+    wandb.finish()
     return results
 
 

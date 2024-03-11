@@ -45,7 +45,7 @@ from transformers import (
 
 from bert_crf import *
 from utils_leven import convert_examples_to_features, get_labels, read_examples_from_file
-from fgm import FGM
+from fgm import FGM, FGSM, PGD, FreeAT
 import wandb
 warnings.filterwarnings('ignore')
 
@@ -247,7 +247,15 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
     train_iterator = trange(int(args.num_train_epochs), desc="Epoch", disable=args.local_rank not in [-1, 0])
 
     set_seed(args)  # Added here for reproductibility (even between python 2 and 3)
-    fgm = FGM(model)
+
+    if args.adv == 'fgsm':
+        fgsm = FGSM(model=model)
+    elif args.adv == 'pgd':
+        pgd = PGD(model=model)
+    elif args.adv == 'FreeAT':
+        free_at = FreeAT(model=model)
+    elif args.adv == 'fgm':
+        fgm = FGM(model=model)
     for _ in train_iterator:
         epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
         for step, batch in enumerate(epoch_iterator):
@@ -273,15 +281,64 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
                     scaled_loss.backward()
             else:
                 loss.backward()
-            # FGM
-            fgm.attack()
-            loss_adv = model(**inputs)[0]
-            if args.n_gpu > 1:
-                loss_adv = loss_adv.mean()  # mean() to average on multi-gpu parallel training
-            if args.gradient_accumulation_steps > 1:
-                loss_adv = loss_adv / args.gradient_accumulation_steps
-            loss_adv.backward()
-            fgm.restore()
+            # 对抗训练
+
+            if args.adv == 'fgsm':
+                fgsm.attack()
+                loss_adv = model(**inputs)[0]
+                if args.n_gpu > 1:
+                    loss_adv = loss_adv.mean()  # mean() to average on multi-gpu parallel training
+                if args.gradient_accumulation_steps > 1:
+                    loss_adv = loss_adv / args.gradient_accumulation_steps
+                loss_adv.backward()
+                fgsm.restore()
+
+            elif args.adv == 'pgd':
+                pgd_k = 3
+                pgd.backup_grad()
+                for _t in range(pgd_k):
+                    pgd.attack(is_first_attack=(_t == 0))
+
+                    if _t != pgd_k - 1:
+                        model.zero_grad()
+                    else:
+                        pgd.restore_grad()
+                    loss_adv = model(**inputs)[0]
+                    if args.n_gpu > 1:
+                        loss_adv = loss_adv.mean()  # mean() to average on multi-gpu parallel training
+                    if args.gradient_accumulation_steps > 1:
+                        loss_adv = loss_adv / args.gradient_accumulation_steps
+                    loss_adv.backward()
+                pgd.restore()
+
+            elif args.adv == 'FreeAT':
+                m = 5
+                free_at.backup_grad()
+                for _t in range(m):
+                    free_at.attack(is_first_attack=(_t == 0))
+
+                    if _t != m - 1:
+                        model.zero_grad()
+                    else:
+                        free_at.restore_grad()
+
+                    loss_adv = model(**inputs)[0]
+                    if args.n_gpu > 1:
+                        loss_adv = loss_adv.mean()  # mean() to average on multi-gpu parallel training
+                    if args.gradient_accumulation_steps > 1:
+                        loss_adv = loss_adv / args.gradient_accumulation_steps
+                    loss_adv.backward()
+                free_at.restore()
+
+            elif args.adv == 'fgm':
+                fgm.attack()
+                loss_adv = model(**inputs)[0]
+                if args.n_gpu > 1:
+                    loss_adv = loss_adv.mean()  # mean() to average on multi-gpu parallel training
+                if args.gradient_accumulation_steps > 1:
+                    loss_adv = loss_adv / args.gradient_accumulation_steps
+                loss_adv.backward()
+                fgm.restore()
 
             tr_loss += loss_adv.item()
             loss_list.append(loss_adv.item())
@@ -545,7 +602,19 @@ def main():
                             help="For distributed training: local_rank")
         parser.add_argument("--server_ip", type=str, default="", help="For distant debugging.")
         parser.add_argument("--server_port", type=str, default="", help="For distant debugging.")
+        parser.add_argument("--adv", type=str, default="")
+        parser.add_argument("--wandb", type=str, default="")
+        parser.add_argument("--wandbname", type=str, default="")
         args = parser.parse_args()
+        # 设置环境变量LC_ALL=C.UTF-8
+        os.environ['LC_ALL'] = 'C.UTF-8'
+        os.environ['LANG'] = 'C.UTF-8'
+        wandb.init(
+            # set the wandb project where this run will be logged
+            # 名称为2shot加上时间，格式为yyyyMMddHHmm
+            project=args.wandb,
+            name=args.wandbname
+        )
 
     if os.path.exists(args.output_dir) and os.listdir(
             args.output_dir) and args.do_train and not args.overwrite_output_dir:
@@ -716,18 +785,10 @@ def main():
         model.to(args.device)
         result, predictions = evaluate(args, model, tokenizer, labels, pad_token_label_id, mode="valid")
 
+    wandb.finish()
     return results
 
 
 if __name__ == "__main__":
     faulthandler.enable()
-    # 设置环境变量LC_ALL=C.UTF-8
-    os.environ['LC_ALL'] = 'C.UTF-8'
-    os.environ['LANG'] = 'C.UTF-8'
-    wandb.init(
-        # set the wandb project where this run will be logged
-        # 名称为2shot加上时间，格式为yyyyMMddHHmm
-        project="2shot_t4_" + datetime.now().strftime("%Y%m%d%H%M")
-    )
     main()
-    wandb.finish()

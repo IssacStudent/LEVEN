@@ -1,14 +1,15 @@
-CUDA_VISIBLE_DEVICES=0,1 python run_ee.py \
-    --model_name_or_path hfl/chinese-roberta-wwm-ext \
-    --per_gpu_train_batch_size 12 \
-    --per_gpu_eval_batch_size 12 \
-    --gradient_accumulation_steps 2 \
-    --learning_rate 5e-5 \
-    --num_train_epochs 10 \
+CUDA_VISIBLE_DEVICES=2,3,4,5,6,7 python run_ee.py \
+    --data_dir ./2shotnew \
+    --output_dir ./saved_20240311 \
+    --model_name_or_path ./legalroberta \
+    --per_gpu_train_batch_size 15 \
+    --per_gpu_eval_batch_size 15 \
+    --gradient_accumulation_steps 1 \
+    --learning_rate 1e-5 \
+    --num_train_epochs 400 \
     --save_steps 500 \
-    --logging_steps 500\
-    --seed 48 \
+    --seed 3407 \
     --do_eval \
     --do_train \
     --overwrite_output_dir \
-    --evaluate_during_training 
+    --eval_all_checkpoints

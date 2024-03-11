@@ -27,6 +27,7 @@ import json
 
 import numpy as np
 import torch
+import wandb
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
@@ -417,7 +418,7 @@ def main():
         )
         parser.add_argument(
             "--model_name_or_path",
-            default='hfl/chinese-roberta-wwm-ext',
+            default='./legalroberta',
             type=str,
             required=False,
             help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS),
@@ -439,11 +440,11 @@ def main():
 
         # Other parameters
         parser.add_argument(
-            "--config_name", default="", type=str, help="Pretrained config name or path if not the same as model_name"
+            "--config_name", default="./legalroberta", type=str, help="Pretrained config name or path if not the same as model_name"
         )
         parser.add_argument(
             "--tokenizer_name",
-            default="",
+            default="hfl/chinese-roberta-wwm-ext",
             type=str,
             help="Pretrained tokenizer name or path if not the same as model_name",
         )
@@ -527,8 +528,18 @@ def main():
         parser.add_argument("--local_rank", type=int, default=-1, help="For distributed training: local_rank")
         parser.add_argument("--server_ip", type=str, default="", help="For distant debugging.")
         parser.add_argument("--server_port", type=str, default="", help="For distant debugging.")
+        parser.add_argument("--wandb", type=str, default="")
+        parser.add_argument("--wandbname", type=str, default="")
         args = parser.parse_args()
-
+        # 设置环境变量LC_ALL=C.UTF-8
+        os.environ['LC_ALL'] = 'C.UTF-8'
+        os.environ['LANG'] = 'C.UTF-8'
+        wandb.init(
+            # set the wandb project where this run will be logged
+            # 名称为2shot加上时间，格式为yyyyMMddHHmm
+            project=args.wandb,
+            name=args.wandbname
+        )
     if (
         os.path.exists(args.output_dir)
         and os.listdir(args.output_dir)
@@ -704,6 +715,7 @@ def main():
 
     if best_steps:
         logger.info("best steps of eval f1 is the following checkpoints: %s", best_steps)
+    wandb.fin
     return results
 
 

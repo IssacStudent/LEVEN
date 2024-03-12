@@ -108,16 +108,24 @@ class FreeAT:
         self.eps = eps
         self.emb_backup = {}
         self.grad_backup = {}
-        self.last_r_at = 0
+        self.last_r_at = {}
 
     def attack(self, emb_name='embedding', is_first_attack=False):
         for name, param in self.model.named_parameters():
             if param.requires_grad and emb_name in name:
                 if is_first_attack:
                     self.emb_backup[name] = param.data.clone()
-                param.data.add_(self.last_r_at)
+                    self.last_r_at[name] = torch.zeros_like(param.data)
+                else:
+                    # 确保在非首次攻击时，已经为该参数初始化了扰动
+                    if name not in self.last_r_at:
+                        self.last_r_at[name] = torch.zeros_like(param.data)
+                # 应用当前存储的扰动
+                param.data.add_(self.last_r_at[name])
+                # 投影到允许的扰动范围内（这里假设你有相应的逻辑）
                 param.data = self.project(name, param.data)
-                self.last_r_at = self.last_r_at + self.eps * param.grad.sign()
+                # 更新扰动量
+                self.last_r_at[name] = self.last_r_at[name] + self.eps * param.grad.sign()
 
     def restore(self, emb_name='embedding'):
         for name, param in self.model.named_parameters():

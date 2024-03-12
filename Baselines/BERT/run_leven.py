@@ -340,6 +340,9 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
                 loss_adv.backward()
                 fgm.restore()
 
+            else:
+                loss_adv = loss
+
             tr_loss += loss_adv.item()
             loss_list.append(loss_adv.item())
             wandb.log({"loss_adv": loss_adv.item()})

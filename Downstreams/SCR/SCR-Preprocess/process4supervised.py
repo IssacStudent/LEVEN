@@ -22,7 +22,7 @@ class BertCrfTagging(object):
                  mode='query'):
         self.device = device
         self.model = BertCRFForTokenClassification.from_pretrained(checkpoint)
-        self.tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
+        self.tokenizer = BertTokenizer.from_pretrained('./bert-base-chinese')
         self.data_path = data_path
         self.max_length = max_length
         self.batch_size = batch_size

@@ -1,14 +1,15 @@
-from transformers import BertTokenizer
-from bert_crf import BertCRFForTokenClassification
+import json
+import os
+import re
+import warnings
+
+import jsonlines
 import torch
 from tqdm import tqdm
-import jsonlines
-import os
-import warnings
-import json
-import re
-import random
-import math
+from transformers import BertTokenizer
+
+from bert_crf import BertCRFForTokenClassification
+
 warnings.filterwarnings('ignore')
 
 

@@ -34,6 +34,8 @@ if __name__ == "__main__":
     parser.add_argument('--comment', help="checkpoint file path", default=None)
     parser.add_argument('--test_file', default=None)
     parser.add_argument("--seed", default=2333)
+    parser.add_argument("--wandb", type=str)
+    parser.add_argument("--wandbname", type=str)
     args = parser.parse_args()
 
     configFilePath = args.config

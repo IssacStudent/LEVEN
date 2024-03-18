@@ -21,10 +21,10 @@ class PairwiseDataset(Dataset):
                 if test_file == str(i):
                     continue
                 else:
-                    querys += json.load(open(os.path.join(self.query_path, 'query_%d.json' % i), 'r'))
+                    querys += json.load(open(os.path.join(self.query_path, 'query_%d.json' % i), 'r', encoding='utf-8'))
             else:
                 if test_file == str(i):
-                    querys = json.load(open(os.path.join(self.query_path, 'query_%d.json' % i), 'r'))
+                    querys = json.load(open(os.path.join(self.query_path, 'query_%d.json' % i), 'r', encoding='utf-8'))
         pos_num = 0
         self.query2posneg = {}
         for query in querys:
@@ -32,7 +32,7 @@ class PairwiseDataset(Dataset):
             path = os.path.join(self.cand_path, str(query["ridx"]))
             self.query2posneg[str(query["ridx"])] = {"pos": [], "neg": []}
             for fn in os.listdir(path):
-                cand = json.load(open(os.path.join(path, fn), "r"))
+                cand = json.load(open(os.path.join(path, fn), "r", encoding="utf-8"))
                 label = int(fn.split('.')[0]) in self.labels[str(query["ridx"])]
                 if label:
                     self.query2posneg[str(query["ridx"])]["pos"].append(len(self.data))

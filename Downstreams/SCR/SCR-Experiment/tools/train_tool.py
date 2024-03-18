@@ -1,6 +1,7 @@
 import logging
 import os
 import torch
+import wandb
 from torch.autograd import Variable
 from torch.optim import lr_scheduler
 import shutil
@@ -96,6 +97,9 @@ def train(parameters, config, gpu_list, do_test=False, local_rank=-1):
             results = model(data, config, gpu_list, acc_result, "train")
 
             loss, acc_result = results["loss"], results["acc_result"]
+
+            wandb.log({"loss": loss})
+
             total_loss += float(loss)
 
             loss.backward()

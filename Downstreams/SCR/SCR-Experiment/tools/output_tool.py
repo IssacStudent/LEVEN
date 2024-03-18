@@ -1,5 +1,7 @@
 import json
 
+import wandb
+
 from .accuracy_tool import gen_micro_macro_result
 
 
@@ -41,6 +43,7 @@ def output_function1(data, config, *args, **params):
             'recall': round(recall, 4),
             'f1': round(f1, 4),
         }
+    wandb.log(metric)
     return json.dumps(metric)
 
 

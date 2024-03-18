@@ -3,6 +3,8 @@ import os
 import torch
 import logging
 
+import wandb
+
 from tools.init_tool import init_all
 from config_parser import create_config
 from tools.train_tool import train
@@ -37,6 +39,15 @@ if __name__ == "__main__":
     parser.add_argument("--wandb", type=str)
     parser.add_argument("--wandbname", type=str)
     args = parser.parse_args()
+
+    os.environ['LC_ALL'] = 'C.UTF-8'
+    os.environ['LANG'] = 'C.UTF-8'
+    wandb.init(
+        # set the wandb project where this run will be logged
+        # 名称为2shot加上时间，格式为yyyyMMddHHmm
+        project=args.wandb,
+        name=args.wandbname
+    )
 
     configFilePath = args.config
 
@@ -79,3 +90,5 @@ if __name__ == "__main__":
     print(args.comment)
     with torch.autograd.set_detect_anomaly(True):
         train(parameters, config, gpu_list, do_test, args.local_rank)
+
+    wandb.finish()

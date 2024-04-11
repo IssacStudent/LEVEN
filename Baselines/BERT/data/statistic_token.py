@@ -28,6 +28,6 @@ def process_jsonl(file_path):
 file_path = 'valid.jsonl'
 total_tokens, total_trigger_words, trigger_word_ratio = process_jsonl(file_path)
 
-print(f"总共的tokens数量：{total_tokens}")
-print(f"总共的触发词数量：{total_trigger_words}")
-print(f"触发词的比例：{trigger_word_ratio:.2%}")
+print(f"total tokens:{total_tokens}")
+print(f"total_trigger_words:{total_trigger_words}")
+print(f"trigger_word_ratio:{trigger_word_ratio:.2%}")

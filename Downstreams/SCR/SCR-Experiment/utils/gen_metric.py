@@ -100,8 +100,8 @@ if __name__ == "__main__":
 
     # vanilla BERT
     print('vanilla BERT')
-    met.pred_path('./result/BERT/test0')   # path to the predicted files
+    met.pred_path('./result_old/BERT/test0')   # path to the predicted files
 
     # BERT with event
     print('BERT with event')
-    met.pred_path('./result/EDBERT/test0')
+    met.pred_path('./result_old/EDBERT/test0')

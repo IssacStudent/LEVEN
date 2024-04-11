@@ -17,8 +17,8 @@ def download_files(model_name, proxy=None):
     divs = soup.find_all("div", class_="col-span-8 flex items-center md:col-span-4 lg:col-span-3")
     links = [div.find("a", class_="group flex items-center truncate")["href"] for div in divs if div.find("a", class_="group flex items-center truncate")]
 
-    if not os.path.exists("google/mt5-base"):
-        os.makedirs("google/mt5-base")
+    if not os.path.exists("hfl/chinese-roberta-wwm-ext"):
+        os.makedirs("hfl/chinese-roberta-wwm-ext")
 
     for link in links:
         print(link)
@@ -27,7 +27,7 @@ def download_files(model_name, proxy=None):
         # Construct the full URL for file downloading
         file_url = f"{download_base_url}/{relative_path}?download=true"
         file_name = link.split('/')[-1]
-        file_path = os.path.join("google/mt5-base", file_name)
+        file_path = os.path.join("hfl/chinese-roberta-wwm-ext", file_name)
         with requests.get(file_url, stream=True, proxies=proxies) as r:
             with open(file_path, 'wb') as f:
                 for chunk in r.iter_content(chunk_size=8192):
@@ -36,4 +36,4 @@ def download_files(model_name, proxy=None):
     print("finished!")
 
 # Example usage
-download_files("google/mt5-base", "http://127.0.0.1:7890")  # With proxy
+download_files("hfl/chinese-roberta-wwm-ext", "http://127.0.0.1:7890")  # With proxy

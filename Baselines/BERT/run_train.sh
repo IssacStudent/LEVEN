@@ -1,16 +1,22 @@
-CUDA_VISIBLE_DEVICES=0,1 python run_leven.py \
-	--data_dir ./2shot \
+CUDA_VISIBLE_DEVICES=0 python run_leven.py \
+  --data_dir ./new_data \
 	--model_type bert \
-	--output_dir ./saved_20240229_2shot \
+	--output_dir ./saved_deberta \
+	--model_name_or_path ./deberta \
+	--config_name ./deberta \
+	--tokenizer_name ./deberta \
 	--max_seq_length 512 \
 	--per_gpu_train_batch_size 15 \
 	--per_gpu_eval_batch_size 15 \
-	--gradient_accumulation_steps 2 \
-	--learning_rate 5e-5 \
-	--num_train_epochs 40 \
-	--save_steps 10 \
+	--gradient_accumulation_steps 1 \
+	--learning_rate 1e-5 \
+	--num_train_epochs 4 \
+	--save_steps 100 \
 	--seed 3407 \
 	--do_train \
 	--do_eval \
 	--eval_all_checkpoints \
-	--overwrite_output_dir
+	--overwrite_output_dir \
+	--adv no \
+	--wandb deberta \
+	--wandbname deberta

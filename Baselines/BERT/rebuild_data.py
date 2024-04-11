@@ -4,7 +4,7 @@ import random
 
 # 定义路径
 original_data_folder = 'data'
-new_data_folder = 'new_data'
+new_data_folder = 'new_data_newnew'
 
 # 确保新目录存在
 if not os.path.exists(new_data_folder):
@@ -21,14 +21,14 @@ for filename in ['train.jsonl', 'valid.jsonl']:
 random.shuffle(all_data)
 
 # 分配数据
-train_data = all_data[:5877]
-valid_data = all_data[5877:]
-test_data = all_data[5877:]
+train_data = all_data[:4245]
+valid_data = all_data[4245:5224]
+test_data = all_data[5224:6531]
 
 # 写入新文件
 for data, filename in zip([train_data, valid_data, test_data],
                           ['train.jsonl', 'valid.jsonl', 'test.jsonl']):
-    with open(os.path.join(new_data_folder, filename), 'w', encoding='utf-8') as file:
+    with open(os.path.join(new_data_folder, filename), 'w') as file:
         for item in data:
             json.dump(item, file)
             file.write('\n')

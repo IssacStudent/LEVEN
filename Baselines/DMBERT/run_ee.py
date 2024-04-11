@@ -725,4 +725,13 @@ def main():
 
 
 if __name__ == "__main__":
+    os.environ['LC_ALL'] = 'C.UTF-8'
+    os.environ['LANG'] = 'C.UTF-8'
+    wandb.init(
+        # set the wandb project where this run will be logged
+        # 名称为2shot加上时间，格式为yyyyMMddHHmm
+        project='leven_test',
+        name='test'
+    )
     main()
+    wandb.finish()

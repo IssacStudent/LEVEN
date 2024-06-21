@@ -1,7 +1,7 @@
 CUDA_VISIBLE_DEVICES=0,1 python run_leven.py \
 	--data_dir ./data \
 	--model_type bertcrf \
-	--output_dir ./saved \
+	--output_dir ./saved_new \
 	--max_seq_length 512 \
 	--per_gpu_train_batch_size 4\
 	--per_gpu_eval_batch_size 4\

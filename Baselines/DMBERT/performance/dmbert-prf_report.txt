@@ -1,321 +1,321 @@
 {
     "明知": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 152
     },
     "投案": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9969788519637462,
+        "recall": 0.9821428571428571,
+        "f1-score": 0.9895052473763118,
+        "support": 336
     },
     "供述": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9922178988326849,
+        "recall": 0.9980430528375733,
+        "f1-score": 0.9951219512195121,
+        "support": 511
     },
     "谅解": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 261
     },
     "赔偿": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9755501222493888,
+        "recall": 0.9950124688279302,
+        "f1-score": 0.9851851851851853,
+        "support": 401
     },
     "退赃": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8561151079136691,
+        "recall": 0.8067796610169492,
+        "f1-score": 0.830715532286213,
+        "support": 295
     },
     "销赃": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8876404494382022,
+        "recall": 0.5602836879432624,
+        "f1-score": 0.6869565217391305,
+        "support": 141
     },
     "分赃": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9133333333333333,
+        "recall": 0.958041958041958,
+        "f1-score": 0.9351535836177474,
+        "support": 143
     },
     "搜查/扣押": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9158469945355191,
+        "recall": 0.9893742621015348,
+        "f1-score": 0.9511918274687855,
+        "support": 847
     },
     "举报": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8688524590163934,
+        "recall": 0.9636363636363636,
+        "f1-score": 0.9137931034482758,
+        "support": 55
     },
     "拘捕": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.988155668358714,
+        "recall": 0.9636963696369637,
+        "f1-score": 0.9757727652464494,
+        "support": 606
     },
     "报警/报案": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.994535519125683,
+        "recall": 0.9891304347826086,
+        "f1-score": 0.9918256130790191,
+        "support": 184
     },
     "鉴定": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9916107382550335,
+        "recall": 0.9983108108108109,
+        "f1-score": 0.994949494949495,
+        "support": 592
     },
     "冲突": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9538461538461539,
+        "recall": 0.8051948051948052,
+        "f1-score": 0.8732394366197184,
+        "support": 77
     },
     "言语冲突": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.835820895522388,
+        "recall": 0.9491525423728814,
+        "f1-score": 0.888888888888889,
+        "support": 59
     },
     "肢体冲突": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.96875,
+        "recall": 0.9207920792079208,
+        "f1-score": 0.9441624365482234,
+        "support": 101
     },
     "买卖": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.7152317880794702,
+        "recall": 0.9310344827586207,
+        "f1-score": 0.8089887640449438,
+        "support": 116
     },
     "卖出": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9004524886877828,
+        "recall": 0.961352657004831,
+        "f1-score": 0.9299065420560747,
+        "support": 621
     },
     "买入": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9899665551839465,
+        "recall": 0.9641693811074918,
+        "f1-score": 0.9768976897689768,
+        "support": 614
     },
     "租/借": {
         "precision": 0.0,
         "recall": 0.0,
         "f1-score": 0.0,
-        "support": 0
+        "support": 5
     },
     "出租/出借": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.6,
+        "recall": 0.16666666666666666,
+        "f1-score": 0.2608695652173913,
+        "support": 36
     },
     "租用/借用": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8375634517766497,
+        "recall": 1.0,
+        "f1-score": 0.9116022099447514,
+        "support": 495
     },
     "归还/偿还": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9045092838196287,
+        "recall": 0.8926701570680629,
+        "f1-score": 0.8985507246376812,
+        "support": 382
     },
     "获利": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9247104247104247,
+        "recall": 0.7839607201309329,
+        "f1-score": 0.8485385296722764,
+        "support": 611
     },
     "雇佣": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.9726775956284153,
+        "f1-score": 0.9861495844875346,
+        "support": 183
     },
     "放贷": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.05357142857142857,
+        "f1-score": 0.10169491525423728,
+        "support": 56
     },
     "集资": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9411764705882353,
+        "recall": 0.9056603773584906,
+        "f1-score": 0.923076923076923,
+        "support": 53
     },
     "支付/给付": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9188580015026296,
+        "recall": 0.9760574620909817,
+        "f1-score": 0.9465944272445821,
+        "support": 1253
     },
     "签订合同/订立协议": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9931972789115646,
+        "recall": 0.9931972789115646,
+        "f1-score": 0.9931972789115646,
+        "support": 294
     },
     "制造": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9018087855297158,
+        "recall": 0.9971428571428571,
+        "f1-score": 0.9470827679782904,
+        "support": 350
     },
     "遗弃": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9636363636363636,
+        "recall": 0.9814814814814815,
+        "f1-score": 0.9724770642201834,
+        "support": 54
     },
     "运输/运送": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9285714285714286,
+        "recall": 0.9780564263322884,
+        "f1-score": 0.9526717557251908,
+        "support": 319
     },
     "邮寄": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8,
+        "recall": 0.8,
+        "f1-score": 0.8000000000000002,
+        "support": 30
     },
     "组织/安排": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9518413597733711,
+        "recall": 0.9627507163323782,
+        "f1-score": 0.9572649572649572,
+        "support": 349
     },
     "散布": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.84,
+        "recall": 0.9130434782608695,
+        "f1-score": 0.8749999999999999,
+        "support": 23
     },
     "联络": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9334600760456274,
+        "recall": 0.9684418145956607,
+        "f1-score": 0.9506292352371734,
+        "support": 507
     },
     "通知/提醒": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9822695035460993,
+        "recall": 0.9022801302931596,
+        "f1-score": 0.9405772495755518,
+        "support": 307
     },
     "介绍/引荐": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.9744897959183674,
+        "f1-score": 0.9870801033591732,
+        "support": 196
     },
     "邀请/招揽": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.912,
+        "recall": 0.957983193277311,
+        "f1-score": 0.9344262295081968,
+        "support": 119
     },
     "纠集": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9560439560439561,
+        "recall": 0.6170212765957447,
+        "f1-score": 0.75,
+        "support": 141
     },
     "阻止/妨碍": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9333333333333333,
+        "recall": 0.9166666666666666,
+        "f1-score": 0.9249249249249248,
+        "support": 168
     },
     "挑衅/挑拨": {
         "precision": 0.0,
         "recall": 0.0,
         "f1-score": 0.0,
-        "support": 0
+        "support": 2
     },
     "帮助/救助": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9900596421471173,
+        "recall": 0.9822485207100592,
+        "f1-score": 0.986138613861386,
+        "support": 507
     },
     "提供": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9845679012345679,
+        "recall": 0.9696048632218845,
+        "f1-score": 0.9770290964777948,
+        "support": 329
     },
     "放纵": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.7575757575757576,
+        "recall": 0.8928571428571429,
+        "f1-score": 0.819672131147541,
+        "support": 28
     },
     "跟踪": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9583333333333334,
+        "recall": 0.9787234042553191,
+        "f1-score": 0.968421052631579,
+        "support": 47
     },
     "同意/接受": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8344051446945338,
+        "recall": 0.9593345656192237,
+        "f1-score": 0.8925193465176268,
+        "support": 541
     },
     "拒绝/抗拒": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9473684210526315,
+        "recall": 0.9863013698630136,
+        "f1-score": 0.9664429530201343,
+        "support": 146
     },
     "放弃/停止": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9090909090909091,
+        "recall": 0.8974358974358975,
+        "f1-score": 0.9032258064516129,
+        "support": 78
     },
     "要求/请求": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9264173703256936,
+        "recall": 0.987146529562982,
+        "f1-score": 0.9558182949595521,
+        "support": 778
     },
     "建议": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9553571428571429,
+        "recall": 0.9727272727272728,
+        "f1-score": 0.963963963963964,
+        "support": 110
     },
     "约定": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9818181818181818,
+        "recall": 0.9,
+        "f1-score": 0.9391304347826087,
+        "support": 240
     },
     "饮酒": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 90
     },
     "自然灾害": {
         "precision": 0.0,
@@ -327,13 +327,13 @@
         "precision": 0.0,
         "recall": 0.0,
         "f1-score": 0.0,
-        "support": 0
+        "support": 4
     },
     "干旱": {
         "precision": 0.0,
         "recall": 0.0,
         "f1-score": 0.0,
-        "support": 0
+        "support": 4
     },
     "山体滑坡": {
         "precision": 0.0,
@@ -342,327 +342,327 @@
         "support": 0
     },
     "事故": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.7428571428571429,
+        "recall": 0.43333333333333335,
+        "f1-score": 0.5473684210526316,
+        "support": 60
     },
     "交通事故": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8233438485804416,
+        "recall": 0.9961832061068703,
+        "f1-score": 0.9015544041450778,
+        "support": 262
     },
     "火灾事故": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9672131147540983,
+        "recall": 0.8939393939393939,
+        "f1-score": 0.9291338582677166,
+        "support": 66
     },
     "爆炸事故": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.967741935483871,
+        "recall": 0.8333333333333334,
+        "f1-score": 0.8955223880597015,
+        "support": 72
     },
     "暴力": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.7741935483870968,
+        "recall": 0.42857142857142855,
+        "f1-score": 0.5517241379310344,
+        "support": 56
     },
     "杀害": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.2727272727272727,
+        "f1-score": 0.42857142857142855,
+        "support": 22
     },
     "伤害人身": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8823529411764706,
+        "recall": 0.9168704156479217,
+        "f1-score": 0.8992805755395683,
+        "support": 409
     },
     "言语辱骂": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9523809523809523,
+        "recall": 0.9090909090909091,
+        "f1-score": 0.9302325581395349,
+        "support": 22
     },
     "敲诈勒索": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.8888888888888888,
+        "f1-score": 0.9411764705882353,
+        "support": 18
     },
     "威胁/强迫": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9842767295597484,
+        "recall": 0.9873817034700315,
+        "f1-score": 0.9858267716535433,
+        "support": 317
     },
     "持械/持枪": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9617834394904459,
+        "recall": 0.9869281045751634,
+        "f1-score": 0.9741935483870968,
+        "support": 153
     },
     "拘束/拘禁": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9411764705882353,
+        "recall": 0.5783132530120482,
+        "f1-score": 0.7164179104477613,
+        "support": 83
     },
     "绑架": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9111111111111111,
+        "recall": 0.9761904761904762,
+        "f1-score": 0.9425287356321839,
+        "support": 42
     },
     "欺骗": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8685770750988142,
+        "recall": 0.9554347826086956,
+        "f1-score": 0.9099378881987576,
+        "support": 920
     },
     "拐骗": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.8333333333333334,
+        "f1-score": 0.9090909090909091,
+        "support": 30
     },
     "冒充": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9133858267716536,
+        "recall": 0.8529411764705882,
+        "f1-score": 0.8821292775665399,
+        "support": 272
     },
     "伪造": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9465875370919882,
+        "recall": 0.683083511777302,
+        "f1-score": 0.7935323383084578,
+        "support": 467
     },
     "变造": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9795918367346939,
+        "recall": 0.9504950495049505,
+        "f1-score": 0.964824120603015,
+        "support": 101
     },
     "盗窃财物": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9655172413793104,
+        "recall": 0.9655172413793104,
+        "f1-score": 0.9655172413793104,
+        "support": 174
     },
     "抢夺财物": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9235294117647059,
+        "recall": 0.98125,
+        "f1-score": 0.9515151515151515,
+        "support": 160
     },
     "抢劫财物": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9642857142857143,
+        "recall": 0.6923076923076923,
+        "f1-score": 0.8059701492537313,
+        "support": 39
     },
     "挪用财物": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9848484848484849,
+        "recall": 0.8024691358024691,
+        "f1-score": 0.8843537414965986,
+        "support": 81
     },
     "侵占财物": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9021739130434783,
+        "recall": 0.7830188679245284,
+        "f1-score": 0.8383838383838385,
+        "support": 106
     },
     "毁坏财物": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.7823834196891192,
+        "recall": 0.7743589743589744,
+        "f1-score": 0.7783505154639175,
+        "support": 195
     },
     "猥亵": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9473684210526315,
+        "recall": 0.99,
+        "f1-score": 0.9682151589242053,
+        "support": 200
     },
     "强奸": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.5185185185185185,
+        "f1-score": 0.6829268292682926,
+        "support": 54
     },
     "卖淫": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9071729957805907,
+        "recall": 0.9817351598173516,
+        "f1-score": 0.9429824561403509,
+        "support": 438
     },
     "嫖娼": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9690721649484536,
+        "recall": 0.9306930693069307,
+        "f1-score": 0.9494949494949495,
+        "support": 202
     },
     "吸毒": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.9875,
+        "f1-score": 0.9937106918238994,
+        "support": 240
     },
     "贩卖毒品": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8348623853211009,
+        "recall": 0.900990099009901,
+        "f1-score": 0.8666666666666667,
+        "support": 101
     },
     "赌博": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9821428571428571,
+        "recall": 1.0,
+        "f1-score": 0.9909909909909909,
+        "support": 165
     },
     "开设赌场": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 36
     },
     "指使/教唆": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8735632183908046,
+        "recall": 0.6755555555555556,
+        "f1-score": 0.761904761904762,
+        "support": 225
     },
     "共谋": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.7966101694915254,
+        "recall": 0.9437751004016064,
+        "f1-score": 0.863970588235294,
+        "support": 249
     },
     "违章驾驶": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9878787878787879,
+        "recall": 0.9878787878787879,
+        "f1-score": 0.9878787878787879,
+        "support": 165
     },
     "泄露信息": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.75,
+        "recall": 0.5454545454545454,
+        "f1-score": 0.631578947368421,
+        "support": 11
     },
     "私藏/藏匿": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8888888888888888,
+        "recall": 1.0,
+        "f1-score": 0.9411764705882353,
+        "support": 80
     },
     "入室/入户": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.98,
+        "recall": 0.98,
+        "f1-score": 0.98,
+        "support": 50
     },
     "贿赂": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9236111111111112,
+        "recall": 0.6927083333333334,
+        "f1-score": 0.7916666666666667,
+        "support": 192
     },
     "逃匿": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9898648648648649,
+        "recall": 0.9832214765100671,
+        "f1-score": 0.9865319865319865,
+        "support": 298
     },
     "放火": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.8064516129032258,
+        "recall": 0.9615384615384616,
+        "f1-score": 0.8771929824561403,
+        "support": 78
     },
     "走私": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9523809523809523,
+        "recall": 0.8333333333333334,
+        "f1-score": 0.888888888888889,
+        "support": 24
     },
     "投毒": {
         "precision": 0.0,
         "recall": 0.0,
         "f1-score": 0.0,
-        "support": 0
+        "support": 2
     },
     "自杀": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 9
     },
     "死亡": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9424083769633508,
+        "recall": 0.9836065573770492,
+        "f1-score": 0.9625668449197861,
+        "support": 183
     },
     "受伤": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9711340206185567,
+        "recall": 0.9731404958677686,
+        "f1-score": 0.9721362229102167,
+        "support": 484
     },
     "被困": {
         "precision": 0.0,
         "recall": 0.0,
         "f1-score": 0.0,
-        "support": 0
+        "support": 3
     },
     "中毒": {
         "precision": 0.0,
         "recall": 0.0,
         "f1-score": 0.0,
-        "support": 0
+        "support": 1
     },
     "昏迷": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.8,
+        "f1-score": 0.888888888888889,
+        "support": 10
     },
     "遗失": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1-score": 0.8,
+        "support": 12
     },
     "受损": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9249146757679181,
+        "recall": 0.9063545150501672,
+        "f1-score": 0.9155405405405406,
+        "support": 299
     },
     "micro avg": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9292549705046974,
+        "recall": 0.9292549705046974,
+        "f1-score": 0.9292549705046974,
+        "support": 22885
     },
     "macro avg": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.849819590230039,
+        "recall": 0.8018053622590413,
+        "f1-score": 0.8136951057811209,
+        "support": 22885
     },
     "weighted avg": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1-score": 0.0,
-        "support": 0
+        "precision": 0.9306853058422999,
+        "recall": 0.9292549705046974,
+        "f1-score": 0.9254855465611461,
+        "support": 22885
     }
 }

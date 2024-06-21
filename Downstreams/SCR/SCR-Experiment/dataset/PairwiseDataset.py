@@ -27,11 +27,14 @@ class PairwiseDataset(Dataset):
                     querys = json.load(open(os.path.join(self.query_path, 'query_%d.json' % i), 'r', encoding='utf-8'))
         pos_num = 0
         self.query2posneg = {}
+        self.lenn = []
         for query in querys:
             que = query["q"]
             path = os.path.join(self.cand_path, str(query["ridx"]))
             self.query2posneg[str(query["ridx"])] = {"pos": [], "neg": []}
+            tmp_num = 0
             for fn in os.listdir(path):
+                tmp_num += 1
                 cand = json.load(open(os.path.join(path, fn), "r", encoding="utf-8"))
                 label = int(fn.split('.')[0]) in self.labels[str(query["ridx"])]
                 if label:
@@ -47,6 +50,8 @@ class PairwiseDataset(Dataset):
                     "cand_inputs": cand['inputs']                   # added event info
                 })
                 pos_num += int(label)
+            self.lenn.append(tmp_num)
+
         print(mode, "positive num:", pos_num)
 
     def __getitem__(self, item):

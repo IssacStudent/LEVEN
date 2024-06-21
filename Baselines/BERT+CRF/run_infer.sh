@@ -1,6 +1,6 @@
 python run_leven.py \
     --model_type bertcrf \
-    --output_dir ./saved/checkpoint-100 \#path to the trained checkpoint, the results file will also be dumped here
+    --output_dir ./saved/checkpoint-100 \
     --max_seq_length 512 \
     --do_lower_case \
     --per_gpu_train_batch_size 8 \
@@ -11,4 +11,4 @@ python run_leven.py \
     --save_steps 100 \
     --logging_steps 100 \
     --seed 0 \
-    --do_infer #add this flag to do inference only
+    --do_infer

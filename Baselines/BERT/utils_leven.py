@@ -291,12 +291,12 @@ def read_examples_from_file(data_dir, mode):
         for i in range(0, len(words)):
             # 如果labels[i]全都是'O'，则不加入examples
 
-            if all(e == 'O' for e in labels[i]):
-                continue
-            else:
-                examples.append(InputExample(guid="%s-%s-%d" % (mode, doc['id'], i),
-                                         words=words[i],
-                                         labels=labels[i]))
+            # if all(e == 'O' for e in labels[i]):
+            #     continue
+            # else:
+            examples.append(InputExample(guid="%s-%s-%d" % (mode, doc['id'], i),
+                                     words=words[i],
+                                     labels=labels[i]))
 
     return examples
 

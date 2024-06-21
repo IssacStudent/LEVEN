@@ -96,7 +96,7 @@ def evaluate_llm_from_file(data_file, task_name, start, end):
 
 #main函数
 if __name__ == "__main__":
-    # evaluate_llm_from_file("./2_shot_dataset_2000.json", "farui_2_shot_2000", 0, 2000)
-    evaluate_llm_from_file("./5_shot_dataset_2000.json", "farui_5_shot_2000", 0, 2000)
-    evaluate_llm_from_file("./10_shot_dataset_2000.json", "farui_10_shot_2000", 0, 2000)
+    # evaluate_llm_from_file("./2_shot_dataset_2000.json", "farui1_2_shot_2000", 0, 2000)
+    evaluate_llm_from_file("./5_shot_dataset_2000.json", "farui1_5_shot_2000", 0, 2000)
+    evaluate_llm_from_file("./10_shot_dataset_2000.json", "farui1_10_shot_2000", 0, 2000)
     # evaluate_llm_from_file("./2_shot_dataset_5.json", "farui_2_shot_5", 0)

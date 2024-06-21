@@ -45,6 +45,7 @@ def farui(instruction, question, bizId):
         # 循环判断返回的状态，直到返回的状态为200且finish_status为true
         cnt = 0
         while True:
+
             response = requests.post(url, headers=headers, data=json.dumps(data))
             if response.json()['code'] == 200:
                 returned_data = response.json()['data']['output']
@@ -57,6 +58,7 @@ def farui(instruction, question, bizId):
                 returned_text = returned_data['text']
                 return returned_text
             elif response.json()['code'] == 1509:
+                print(response.json()['code'])
                 print('触发限流')
                 cnt += 1
                 if cnt > 10:
